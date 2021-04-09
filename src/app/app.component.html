@@ -1,0 +1,37 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-lg-4">
+       <input type="text" placeholder="Enter Origin" class="w-100" [(ngModel)]="origin" />
+    </div>
+    <div class="col-lg-4">
+        <button (click)="searchResults()">Search Results</button>
+    </div>
+  </div>
+  
+  
+  <app-custom-table [columns]="columns" [values]="results">
+
+    <!-- Header Custom Template -->
+    <ng-template #header let-columns>
+      <tr>
+        <th *ngFor="let column of columns">[{{column.title}}]</th>
+      </tr>
+    </ng-template>
+  
+    <!-- Body Custom Template -->
+    <ng-template #body let-item let-columns="columns">
+      <tr *ngIf="item.id === 1 else diff">
+        <td *ngFor="let column of columns">
+          <span *ngIf="column.title === 'Name'" style="background-color: green">{{item[column.key]}}</span>
+          <span *ngIf="column.title !== 'Name'">{{item[column.key]}}</span>
+        </td>
+      </tr>
+      <ng-template #diff>
+        <tr>
+          <td *ngFor="let column of columns">{{item[column.key]}}</td>
+        </tr>
+      </ng-template>
+    </ng-template>
+  </app-custom-table>
+  
+</div>

@@ -1,0 +1,34 @@
+
+<table class="styled-table table">
+    <!-- Header -->
+    <thead>
+      <ng-container *ngTemplateOutlet="headerTemplate ? headerTemplate: defaultHeader; context:{$implicit: columns}">
+      </ng-container>
+    </thead>
+  
+    <!-- Body -->
+    <tbody>
+      <!-- Here we will provide custom row Template -->
+      <ng-container *ngFor="let rowData of values | paginate: { itemsPerPage: 10, currentPage: p }">
+        <ng-container
+          *ngTemplateOutlet="bodyTemplate ? bodyTemplate: defaultBody; context:{$implicit: rowData,columns: columns , index:rowIndex }">
+        </ng-container>
+      </ng-container>
+    </tbody>
+  </table>
+
+  <!-- Header Default Template -->
+  <ng-template #defaultHeader let-columns>
+    <tr>
+      <th *ngFor="let column of columns">{{column.title}}</th>
+    </tr>
+  </ng-template>
+  
+  <!-- Body Default Template -->
+  <ng-template #defaultBody let-item let-columns="columns">
+    <tr>
+      <td *ngFor="let column of columns">{{item[column.key]}}</td>
+    </tr>
+  </ng-template>
+
+  <pagination-controls (pageChange)="p = $event" class="float-right"></pagination-controls>
