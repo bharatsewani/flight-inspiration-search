@@ -8,9 +8,7 @@
     </div>
   </div>
   
-  
   <app-custom-table [columns]="columns" [values]="results">
-
     <!-- Header Custom Template -->
     <ng-template #header let-columns>
       <tr>
@@ -20,17 +18,9 @@
   
     <!-- Body Custom Template -->
     <ng-template #body let-item let-columns="columns">
-      <tr *ngIf="item.id === 1 else diff">
-        <td *ngFor="let column of columns">
-          <span *ngIf="column.title === 'Name'" style="background-color: green">{{item[column.key]}}</span>
-          <span *ngIf="column.title !== 'Name'">{{item[column.key]}}</span>
-        </td>
-      </tr>
-      <ng-template #diff>
-        <tr>
-          <td *ngFor="let column of columns">{{item[column.key]}}</td>
+        <tr class="custom-height">
+          <td class='vert-align' *ngFor="let column of columns">{{item[column.key]}}</td>
         </tr>
-      </ng-template>
     </ng-template>
   </app-custom-table>
   
