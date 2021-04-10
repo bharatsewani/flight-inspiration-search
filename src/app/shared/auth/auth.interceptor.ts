@@ -21,10 +21,14 @@ export class AuthInterceptor implements HttpInterceptor {
           'Authorization': `Bearer ${token}`,
         }
       });
-
       return next.handle(req).toPromise();
     } else {
-      return next.handle(request).toPromise();
+      let req = request.clone({
+        setHeaders: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      });
+      return next.handle(req).toPromise();
     }
 
   }
