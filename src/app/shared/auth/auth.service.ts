@@ -31,9 +31,9 @@ export class AuthService extends BackendService {
 
     fetchToken() {
         const body = new HttpParams()
-            .set(`grant_type`, "************")
-            .set(`client_id`, "************")
-            .set(`client_secret`, "**********");
+        .set(`grant_type`, "*****")
+        .set(`client_id`, "*****")
+        .set(`client_secret`, "*****");
         return this.invokeHttpPostCall(ApiConstants.GET_TOKEN, body.toString(), true);
     }
 
