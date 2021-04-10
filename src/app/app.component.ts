@@ -33,9 +33,13 @@ export class AppComponent {
        }
         console.log('response received', this.results);
      }, (error)=> {
-        if(error.code == AppConstants.ERROR_CODES.AUTH_ERROR){
+        if(error.code == AppConstants.ERROR_CODES.TOKEN_EXPIRED){
           console.log('token expired');
           localStorage.removeItem('auth_token');
+          return;
+        } else if(error.code === AppConstants.ERROR_CODES.INVALID_TOKEN){
+          console.log('invalid token');
+          return;
         }
         console.log('some error occured');
      })
