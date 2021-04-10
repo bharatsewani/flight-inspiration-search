@@ -12,6 +12,7 @@ export class AppComponent {
   title = 'flight-inspiration-search';
   results : Array<FlightSearchResult> = []
   origin: string = '';
+  isLoading:boolean = false;
   constructor(public searchService: SearchService){
 
   }
@@ -25,12 +26,17 @@ export class AppComponent {
   ];
 
   searchResults(){
+     if(!this.origin){
+       return;
+     }
+     this.isLoading = true;
      this.searchService.searchFlights({'origin':this.origin}).subscribe((response)=> {
        if(response && response.data){
           this.results = response.data.map((res:any)=> {
             return new FlightSearchResult(res.origin, res.destination, res.departureDate, res.returnDate, res.price.total);
         })
        }
+       this.isLoading = false;
         console.log('response received', this.results);
      }, (error)=> {
         if(error.code == AppConstants.ERROR_CODES.TOKEN_EXPIRED){
