@@ -5,6 +5,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { CustomTableComponent } from './custom-table/custom-table.component';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { AuthService } from './auth/auth.service';
 
 @NgModule({
   declarations: [CustomTableComponent],
@@ -18,6 +19,6 @@ import { NgxPaginationModule } from 'ngx-pagination';
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptor,
     multi: true,
-  }, BackendService]
+  }, BackendService, AuthService]
 })
 export class SharedModule { }

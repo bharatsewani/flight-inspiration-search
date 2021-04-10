@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { SearchService } from './services/search.service';
 import { FlightSearchResult } from './models/flight-inspiration-search.model';
+import { AppConstants } from './constants/app.constants';
 
 @Component({
   selector: 'app-root',
@@ -32,6 +33,10 @@ export class AppComponent {
        }
         console.log('response received', this.results);
      }, (error)=> {
+        if(error.code == AppConstants.ERROR_CODES.AUTH_ERROR){
+          console.log('token expired');
+          localStorage.removeItem('auth_token');
+        }
         console.log('some error occured');
      })
   }
