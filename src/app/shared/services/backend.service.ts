@@ -20,24 +20,11 @@ export class BackendService {
         )
     }
 
-    invokeHttpPostCall(url: string, body: any, isFormUrlEncodedContentType?:boolean): Observable<any> {
-        if(isFormUrlEncodedContentType){
-            let httpHeaders = new HttpHeaders();
-
-            httpHeaders = httpHeaders.set('Content-Type', 'application/x-www-form-urlencoded');
-            let options = {'headers': httpHeaders};
-            return this.httpClient.post(`${this.contextUrl}${url}`, body, options).pipe(
-                timeoutWith(TIMEOUT_DURATION, throwError(TIMEOUT_MSG)),
-                catchError(error => this.handleError(error))
-            )
-        } else {
-            return this.httpClient.post(`${this.contextUrl}${url}`, body).pipe(
-                timeoutWith(TIMEOUT_DURATION, throwError(TIMEOUT_MSG)),
-                catchError(error => this.handleError(error))
-            )
-        }
-     
-       
+    invokeHttpPostCall(url: string, body: any): Observable<any> {
+        return this.httpClient.post(`${this.contextUrl}${url}`, body).pipe(
+            timeoutWith(TIMEOUT_DURATION, throwError(TIMEOUT_MSG)),
+            catchError(error => this.handleError(error))
+        )
     }
 
     handleError(error: any) {
