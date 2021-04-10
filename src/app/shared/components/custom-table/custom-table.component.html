@@ -1,5 +1,5 @@
 
-<table class="styled-table table">
+<table class="styled-table table table-hover">
     <!-- Header -->
     <thead>
       <ng-container *ngTemplateOutlet="headerTemplate ? headerTemplate: defaultHeader; context:{$implicit: columns}">
@@ -31,4 +31,5 @@
     </tr>
   </ng-template>
 
+  <!-- Pagination  -->
   <pagination-controls (pageChange)="p = $event" class="float-right"></pagination-controls>

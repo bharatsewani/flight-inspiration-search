@@ -9,6 +9,7 @@ export class CustomTableComponent implements OnInit {
 
   constructor() { }
   p: number = 1;
+  
   @Input()
   columns: { title: string; key: string }[] = [];
 
