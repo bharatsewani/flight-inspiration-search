@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { timeoutWith, catchError } from 'rxjs/operators';
 import { ApiConstants } from '../../constants/api-constants';
@@ -20,27 +20,34 @@ export class BackendService {
         )
     }
 
-    getHttpHeaders(){
-       let httpHeaders = new HttpHeaders();
+    invokeHttpPostCall(url: string, body: any, isFormUrlEncodedContentType?:boolean): Observable<any> {
+        if(isFormUrlEncodedContentType){
+            let httpHeaders = new HttpHeaders();
+            httpHeaders = httpHeaders.set('Content-Type', 'application/x-www-form-urlencoded');
+            let options = {'headers': httpHeaders};
+            return this.httpClient.post(`${this.contextUrl}${url}`, body, options).pipe(
+                timeoutWith(TIMEOUT_DURATION, throwError(TIMEOUT_MSG)),
+                catchError(error => this.handleError(error))
+            )
+        } else {
+            return this.httpClient.post(`${this.contextUrl}${url}`, body).pipe(
+                timeoutWith(TIMEOUT_DURATION, throwError(TIMEOUT_MSG)),
+                catchError(error => this.handleError(error))
+            )
+        }
+     
        
-       httpHeaders = httpHeaders.set('Authorization', 'Bearer eAFA4RBAAPAHTCrxhKpnKxb5UBS0');
-       return httpHeaders;
     }
 
     handleError(error: any) {
-        let errMsg: string;
-        if (error.error instanceof ErrorEvent) {
-            try {
+        let errMsgObj: Object;
+        if (error.error) {
                 const body = error.error || '';
-                const err = body.message || JSON.stringify(body);
-                errMsg = err;
-            }
-            catch (e) {
-                errMsg = `${error.status}- ${error.statusText || ''}`
-            }
+                const err = body.errors[0] || JSON.stringify(body);
+                errMsgObj = err;
         } else {
-            errMsg = error.error.message ? error.message : error.toString();
+            errMsgObj = {'msg': 'some error occured'}
         }
-        return throwError(errMsg)
+        return throwError(errMsgObj)
     }
 }
