@@ -34,11 +34,12 @@ export class AppComponent {
        if(response && response.data){
           this.results = response.data.map((res:any)=> {
             return new FlightSearchResult(res.origin, res.destination, res.departureDate, res.returnDate, res.price.total);
-        })
+          });
        }
        this.isLoading = false;
         console.log('response received', this.results);
      }, (error)=> {
+        this.isLoading = false;
         if(error.code == AppConstants.ERROR_CODES.TOKEN_EXPIRED){
           console.log('token expired');
           localStorage.removeItem('auth_token');
